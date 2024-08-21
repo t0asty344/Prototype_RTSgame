@@ -1,0 +1,4 @@
+repository "RTS buildgame@okiuhm77@cloud"
+  path "/"
+    br "/main"
+    co "/main"
