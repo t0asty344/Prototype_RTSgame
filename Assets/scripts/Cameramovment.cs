@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cameramovment : MonoBehaviour
 {
-    
+    [SerializeField] CinemachineVirtualCamera cinemachineVirtualCamera;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,7 @@ public class Cameramovment : MonoBehaviour
     void Update()
     {
         float target = Input.mouseScrollDelta.y;
-        gameObject.transform.Rotate(target,0,0);
+        cinemachineVirtualCamera.m_Lens.FieldOfView +=target;
 
     }
 }

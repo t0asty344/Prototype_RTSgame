@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +13,12 @@ public class Player : MonoBehaviour
   [SerializeField] float movespeedupdown = 10f;
     [SerializeField]GameObject curentobject;
     [SerializeField] Camera camera;
+    [SerializeField] GameObject imagegear;
+     [SerializeField] GameObject imagebar;
+
+     GameObject buildpreview;
+     bool Buildmode;
+    
     void Start()
     {
         
@@ -20,6 +29,8 @@ public class Player : MonoBehaviour
     {
         Movement();
         Spawn();
+        ActivatingMenu();
+        Buildpreview();
     }
     
     void Movement()
@@ -42,7 +53,7 @@ public class Player : MonoBehaviour
     void Spawn()
     {
 
-        if(Input.GetButtonDown("Fire1"))
+        if(Input.GetButtonDown("Fire1") && Buildmode)
         {
             Transform bases =curentobject.GetComponentInChildren<Transform>().Find("Base");
             float x=bases.localScale.y/2;
@@ -59,6 +70,41 @@ public class Player : MonoBehaviour
                 // Do something with the object that was hit by the raycast.
             }
            
+        }
+    }
+    void ActivatingMenu()
+    {
+        if(Input.GetKeyDown(KeyCode.B) &&   imagebar.activeSelf)
+        {
+            imagebar.SetActive(false);
+            imagegear.SetActive(true);
+            Buildmode =false;
+        }
+        else if(Input.GetKeyDown(KeyCode.B) &&   imagebar.activeSelf==false)
+        {
+            imagebar.SetActive(true);
+            imagegear.SetActive(false);
+            buildpreview = Instantiate(curentobject);
+            Buildmode =true;
+
+        }
+    }
+
+    void Buildpreview()
+    {
+        if(Buildmode)
+        {
+            RaycastHit hit;
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit)) {
+                    if(hit.transform.CompareTag("Floor"))
+                    {
+                    buildpreview.transform.position =hit.point;
+                    }
+                // Do something with the object that was hit by the raycast.
+            }
+
         }
     }
 
